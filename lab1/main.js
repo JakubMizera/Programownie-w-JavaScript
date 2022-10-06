@@ -7,7 +7,6 @@ const sum = document.querySelector('#sum');
 const avg = document.querySelector('#avg');
 const min = document.querySelector('#min');
 const max = document.querySelector('#max');
-console.log(sum);
 
 const btn = document.querySelector('#przelicz');
 
@@ -27,3 +26,11 @@ btn.addEventListener('click', () => {
     min.innerHTML = `Wartość minimalna to ${resultMin}`;
     max.innerHTML = `Wartość maksymalna to ${resultMax}`;
 });
+
+const test = document.querySelector('#test');
+
+const updateValue = (e) => {
+    num1.innerHTML = e.target.value
+}
+
+num1.addEventListener('input', updateValue());
