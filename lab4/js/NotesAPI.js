@@ -1,11 +1,15 @@
 export default class NotesAPI {
     static getAllNotes() {
         const notes = JSON.parse(localStorage.getItem("notesapp-notes") || "[]");
-
         //sorting notes with updated timestamp
-        return notes.sort((a, b) => {
-            return new Date(a.updated) > new Date(b.updated) ? -1 : 1;
-        });
+        return notes.sort(this.sortNotes);
+    }
+
+    static sortNotes(a, b) {
+        if (a.pin === b.pin) {
+            return new Date(b.updated) - new Date(a.updated);
+        };
+        return Number(b.pin) - Number(a.pin);
     }
 
     static saveNote(noteToSave) {
@@ -36,4 +40,6 @@ export default class NotesAPI {
 
         localStorage.setItem("notesapp-notes", JSON.stringify(newNotes));
     }
+
+
 };

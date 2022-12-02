@@ -34,33 +34,31 @@ export default class App {
     _handlers() {
         return {
             onNoteSelect: noteId => {
-                console.log("Note selected:" + noteId);
                 const selectedNote = this.notes.find(note => note.id == noteId);
                 this._setActiveNote(selectedNote);
             },
             onNoteAdd: () => {
-                console.log("Note added");
                 const newNote = {
                     title: "New note",
                     body: "Type here...",
                     color: "#009578",
+                    pin: false,
                 };
 
                 NotesAPI.saveNote(newNote);
                 this._refreshNotes();
             },
-            onNoteEdit: (title, body, color) => {
-                console.log(title, body, color);
+            onNoteEdit: (title, body, color, pin) => {
                 NotesAPI.saveNote({
                     id: this.activeNote.id,
                     title,
                     body,
                     color,
+                    pin,
                 });
                 this._refreshNotes();
             },
             onNoteDelete: noteId => {
-                console.log("Note deleted:" + noteId);
                 NotesAPI.deleteNote(noteId);
                 this._refreshNotes();
             },

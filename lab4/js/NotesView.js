@@ -16,6 +16,11 @@ export default class NotesView {
                 <input type="text" class="notes__title" placeholder="New note...">
                 <textarea class="notes__body">Take note...</textarea>
                 <input type="text" class="notes__color" placeholder="Type color...">
+                <span class="pin">Pin the note</span>
+                <label class="switch">
+                    <input type="checkbox" class="notes__pin">
+                    <span class="slider round"></span>
+                </label>
             </div>
         `;
 
@@ -23,18 +28,21 @@ export default class NotesView {
         const inpTitle = this.root.querySelector(".notes__title");
         const inpBody = this.root.querySelector(".notes__body");
         const inpColor = this.root.querySelector(".notes__color");
+        const inpPin = this.root.querySelector(".notes__pin");
+
 
         btnAddNote.addEventListener('click', () => {
             this.onNoteAdd();
         });
 
-        [inpTitle, inpBody, inpColor].forEach(inputField => {
+        [inpTitle, inpBody, inpColor, inpPin].forEach(inputField => {
             inputField.addEventListener('blur', () => {
                 const updatedTitle = inpTitle.value.trim();
                 const updatedBody = inpBody.value.trim();
                 const updatedColor = inpColor.value.trim();
+                const updatePin = inpPin.checked;
 
-                this.onNoteEdit(updatedTitle, updatedBody, updatedColor);
+                this.onNoteEdit(updatedTitle, updatedBody, updatedColor, updatePin);
             });
         });
 
@@ -46,14 +54,14 @@ export default class NotesView {
         const MAX_BODY_LENGTH = 60;
 
         return `
-            <div class="notes__list-item" data-note-id="${id}">
+            <div  style="background-color:${color};" class="notes__list-item" data-note-id="${id}">
                 <div class="notes__small-title">${title}</div>
                 <div class="notes__small-body">
                     ${body.substring(0, MAX_BODY_LENGTH)}
                     ${body.length > MAX_BODY_LENGTH ? "..." : ""}
                 </div>
-                <div class="notes__small-color">${color}</div>
-                <div class="notes__small-pin">${pin}</div>
+                <div class="notes__small-color"></div>
+                <div class="notes__small-pin">${pin ? "Pinned": "Not pinned"}</div>
                 <div class="notes__small-updated">
                     ${updated.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
                 </div>
@@ -99,7 +107,7 @@ export default class NotesView {
         this.root.querySelector(".notes__title").value = note.title;
         this.root.querySelector(".notes__body").value = note.body;
         this.root.querySelector(".notes__color").value = note.color;
-        //this.root.querySelector(".notes__pin").value = note.pin;
+        this.root.querySelector(".notes__pin").checked = note.pin;
 
         //Setting up background color for selected note
         [this.root.querySelector(".notes__title"),
