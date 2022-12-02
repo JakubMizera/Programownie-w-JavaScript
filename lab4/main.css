@@ -40,8 +40,6 @@ body {
 
 .notes__list-item {
     cursor: pointer;
-    background-color: #e9e8e8;
-    border-radius: 7px;
 }
 
 .notes__list-item--selected {
@@ -59,7 +57,9 @@ body {
     font-size: 1.2em;
 }
 
-.notes__small-body {
+.notes__small-body,
+.notes__small-color,
+.notes__small-pin {
     padding: 0 10px;
 }
 
@@ -94,4 +94,10 @@ body {
     line-height: 1.5;
     margin-top: 2em;
     resize: none;
+}
+
+.notes__color {
+    outline: none;
+    border: 2px solid black;
+    font-size: 1.5rem;
 }

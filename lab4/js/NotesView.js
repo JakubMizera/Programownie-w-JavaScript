@@ -37,5 +37,86 @@ export default class NotesView {
                 this.onNoteEdit(updatedTitle, updatedBody, updatedColor);
             });
         });
+
+        this.updateNotePreviewVisibility(false);
+
     };
+
+    _createListItemHTML(id, title, body, color, pin, updated) {
+        const MAX_BODY_LENGTH = 60;
+
+        return `
+            <div class="notes__list-item" data-note-id="${id}">
+                <div class="notes__small-title">${title}</div>
+                <div class="notes__small-body">
+                    ${body.substring(0, MAX_BODY_LENGTH)}
+                    ${body.length > MAX_BODY_LENGTH ? "..." : ""}
+                </div>
+                <div class="notes__small-color">${color}</div>
+                <div class="notes__small-pin">${pin}</div>
+                <div class="notes__small-updated">
+                    ${updated.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
+                </div>
+            </div>
+        `;
+    }
+
+    updateNoteList(notes) {
+        const notesListContainer = this.root.querySelector(".notes__list");
+
+        //Empty list
+        notesListContainer.innerHTML = " ";
+
+        for (const note of notes) {
+            const html = this._createListItemHTML(
+                note.id,
+                note.title,
+                note.body,
+                note.color,
+                note.pin,
+                new Date(note.updated));
+
+            notesListContainer.insertAdjacentHTML("beforeend", html);
+        }
+
+        //Add select/delete events for each list item
+        notesListContainer.querySelectorAll(".notes__list-item").forEach(noteListItem => {
+            noteListItem.addEventListener('click', () => {
+                this.onNoteSelect(noteListItem.dataset.noteId);
+            });
+
+            noteListItem.addEventListener('dblclick', () => {
+                const doDelete = confirm("Do you want to delete this note?");
+
+                if (doDelete) {
+                    this.onNoteDelete(noteListItem.dataset.noteId);
+                }
+            })
+        });
+    }
+
+    updateActiveNote(note) {
+        this.root.querySelector(".notes__title").value = note.title;
+        this.root.querySelector(".notes__body").value = note.body;
+        this.root.querySelector(".notes__color").value = note.color;
+        //this.root.querySelector(".notes__pin").value = note.pin;
+
+        //Setting up background color for selected note
+        [this.root.querySelector(".notes__title"),
+        this.root.querySelector(".notes__body"),
+        this.root.querySelector(".notes__color"),
+        this.root.querySelector(".notes__preview")].forEach(noteListItem => {
+            noteListItem.style.backgroundColor = note.color;
+        });
+
+        this.root.querySelectorAll(".notes__list-item").forEach(noteListItem => {
+            noteListItem.classList.remove("notes__list-item--selected");
+        });
+
+        this.root.querySelector(`.notes__list-item[data-note-id="${note.id}"]`).classList.add("notes__list-item--selected");
+    }
+
+    updateNotePreviewVisibility(visible) {
+        this.root.querySelector(".notes__preview").style.visibility = visible ? "visible" : "hidden";
+    }
 };
