@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(52, 54, 55);
+}
+
+.playground {
+    width: 600px;
+    height: 600px;
+    background-color: rgb(57, 172, 57);
+    position: relative;
+}
+
+.ball {
+    background-color: azure;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 290px;
+    left: 290px;
+}
+
+.hole {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: black;
+}
