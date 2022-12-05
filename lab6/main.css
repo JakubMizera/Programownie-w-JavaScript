@@ -3,6 +3,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: rgb(52, 54, 55);
+    flex-direction: column;
 }
 
 .playground {
@@ -18,8 +19,10 @@ body {
     height: 20px;
     border-radius: 50%;
     position: absolute;
-    top: 290px;
-    left: 290px;
+    top: 300px;
+    left: 300px;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 .hole {
@@ -28,4 +31,10 @@ body {
     border-radius: 50%;
     position: absolute;
     background-color: black;
+    transform: translate(-50%, -50%);
+}
+
+.showTime {
+    color: white;
+    font-size: 2rem;
 }
