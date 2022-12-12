@@ -1,10 +1,10 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const setCanvasDimentions = () => {
-  canvas.width = 500;
-  canvas.height = 500;
-}
+const setCanvasDimentions = (width = 800, height = 500) => {
+  canvas.width = width;
+  canvas.height = height;
+};
 setCanvasDimentions();
 
 function getRandomInt(min, max) {
@@ -13,27 +13,47 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+// Start button
+const startBtn = document.getElementById("start");
+startBtn.addEventListener('click', update);
+
+// Canvas size input
+const widthInput = document.getElementById("widthInput");
+const heightInput = document.getElementById("heigthInput");
+
+widthInput.addEventListener('change', () => {
+  setCanvasDimentions(parseFloat(widthInput.value));
+  refreshAnimation();
+})
+heightInput.addEventListener('change', () => {
+  setCanvasDimentions(widthInput.value, parseFloat(heightInput.value));
+  refreshAnimation();
+})
+
+
 // Number of balls input
 const inputNumberOfBalls = document.getElementById("numOfBalls");
 let numOfBalls = 20;
-inputNumberOfBalls.addEventListener('input', () => {
+inputNumberOfBalls.addEventListener('change', () => {
   numOfBalls = parseFloat(inputNumberOfBalls.value);
+  refreshAnimation();
 })
 
 // Refresh button
-const btn = document.getElementById("btn");
-btn.addEventListener("click", () => {
+const refreshAnimation = () => {
   ballsArray = [];
   for (i = 0; i < numOfBalls; i++) {
     ballsArray[i] = new Ball();
   }
-})
+}
+const btn = document.getElementById("btn");
+btn.addEventListener("click", refreshAnimation);
 
 class Ball {
   constructor() {
     // {x, y} = position of center of the ball
-    this.x = Math.random() * 500;
-    this.y = Math.random() * 500;
+    this.x = getRandomInt(15, canvas.width - 15);
+    this.y = getRandomInt(15, canvas.height - 15);
     this.vx = Math.random() * 0.3;
     this.vy = Math.random() * 0.3;
     this.ballSize = getRandomInt(10, 15);
@@ -91,5 +111,3 @@ function update() {
 
   requestAnimationFrame(update);
 }
-
-update();
