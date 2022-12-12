@@ -1,9 +1,53 @@
 * {
     margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgb(38, 39, 41);
 }
 
 canvas {
     width: 500px;
     height: 500px;
     border: 2px solid black;
+    background-color: rgb(255, 255, 255);
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 504px;
+}
+
+#numOfBalls {
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 35px;
+}
+
+#numOfBalls::-webkit-outer-spin-button,
+#numOfBalls::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+#btn {
+    width: 100%;
+    height: 35px;
+    font-size: 1.5rem;
+    outline: none;
+    border: none;
 }

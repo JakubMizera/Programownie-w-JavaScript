@@ -13,18 +13,34 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+// Number of balls input
+const inputNumberOfBalls = document.getElementById("numOfBalls");
+let numOfBalls = 20;
+inputNumberOfBalls.addEventListener('input', () => {
+  numOfBalls = parseFloat(inputNumberOfBalls.value);
+})
+
+// Refresh button
+const btn = document.getElementById("btn");
+btn.addEventListener("click", () => {
+  ballsArray = [];
+  for (i = 0; i < numOfBalls; i++) {
+    ballsArray[i] = new Ball();
+  }
+})
+
 class Ball {
   constructor() {
     // {x, y} = position of center of the ball
     this.x = Math.random() * 500;
     this.y = Math.random() * 500;
-    this.vx = Math.random() * 0.5;
-    this.vy = Math.random() * 0.5;
+    this.vx = Math.random() * 0.3;
+    this.vy = Math.random() * 0.3;
     this.ballSize = getRandomInt(10, 15);
   }
 }
 
-const ballsArray = new Array(20);
+let ballsArray = new Array(numOfBalls);
 for (i = 0; i < ballsArray.length; i++) {
   ballsArray[i] = new Ball();
 }
