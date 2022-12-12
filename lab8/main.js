@@ -7,16 +7,24 @@ const setCanvasDimentions = () => {
 }
 setCanvasDimentions();
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 class Ball {
   constructor() {
+    // {x, y} = position of center of the ball
     this.x = Math.random() * 500;
     this.y = Math.random() * 500;
     this.vx = Math.random() * 0.5;
     this.vy = Math.random() * 0.5;
+    this.ballSize = getRandomInt(10, 15);
   }
 }
 
-const ballsArray = new Array(5);
+const ballsArray = new Array(20);
 for (i = 0; i < ballsArray.length; i++) {
   ballsArray[i] = new Ball();
 }
@@ -32,11 +40,11 @@ function update() {
     ball.y += ball.vy;
 
     // Check if the ball has reached the edge of the canvas
-    if (ball.x < 0 || ball.x > canvas.width) {
+    if (ball.x < ball.ballSize || ball.x > canvas.width - ball.ballSize) {
       // If it has, reverse the ball's x velocity
       ball.vx = -ball.vx;
     }
-    if (ball.y < 0 || ball.y > canvas.height) {
+    if (ball.y < ball.ballSize || ball.y > canvas.height - ball.ballSize) {
       // If it has, reverse the ball's y velocity
       ball.vy = -ball.vy;
     }
@@ -44,12 +52,26 @@ function update() {
     // Draw the ball at its new position
     ctx.fillStyle = "grey";
     ctx.beginPath();
-    ctx.arc(ball.x, ball.y, 10, 0, 2 * Math.PI);
+    ctx.arc(ball.x, ball.y, ball.ballSize, 0, 2 * Math.PI);
     ctx.fill();
+    ctx.closePath();
   }
 
-  // Rysownie linii: ctx.beginPath(), ctx.moveTo(), ctx.lineTo()
-
+  const checkDistance = (arr) => {
+    for (i = 0; i < arr.length; i++) {
+      for (j = i + 1; j < arr.length; j++) {
+        const dist = Math.sqrt(Math.pow((arr[i].x - arr[j].x), 2) + Math.pow((arr[i].y - arr[j].y), 2))
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(arr[i].x, arr[i].y);
+          ctx.lineTo(arr[j].x, arr[j].y);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+    }
+  };
+  checkDistance(ballsArray);
 
   requestAnimationFrame(update);
 }
