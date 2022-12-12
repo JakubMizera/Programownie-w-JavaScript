@@ -3,12 +3,16 @@ const playground = document.querySelector(".playground");
 const output = document.querySelector(".output");
 const hole = document.querySelector(".hole");
 const showTime = document.querySelector(".showTime");
+const btn = document.querySelector(".btn");
 
 const maxX = playground.clientWidth - ball.clientWidth; //580px
 const maxY = playground.clientHeight - ball.clientHeight; //580px
 
-hole.style.top = `${Math.floor(Math.random() * 400)}px`;
-hole.style.left = `${Math.floor(Math.random() * 400)}px`;
+const setupHole = () => {
+    hole.style.top = `${Math.floor(Math.random() * 600)}px`;
+    hole.style.left = `${Math.floor(Math.random() * 600)}px`;
+}
+setupHole();
 
 let sec = 0;
 const timer = setInterval(() => {
@@ -16,7 +20,10 @@ const timer = setInterval(() => {
     sec++;
 }, 1000);
 
+
 const onDeviceMove = event => {
+
+
     let x = event.gamma;
     let y = event.beta;
 
@@ -33,8 +40,6 @@ const onDeviceMove = event => {
 
     ball.style.top = `${(maxY * y) / 180 + 10}px`;
     ball.style.left = `${(maxX * x) / 180 + 10}px`;
-    //console.log(parseInt(ball.style.top));
-    console.log(parseInt(ball.style.left));
 
     const checkPosition = ([ball, hole], targetNumber) => {
         const topBall = parseInt(ball.style.top);
@@ -47,16 +52,23 @@ const onDeviceMove = event => {
         );
     }
 
+    const timesArray = [];
+    console.log(timesArray);
+
     if (checkPosition([ball, hole], 2)) {
         window.alert('ball in a hole');
+        timesArray.push(sec);
+        sec = 0;
 
-        clearInterval(timer);
-        document.location.reload(true);
+        //document.location.reload(true);
     }
 
 };
 
-
+btn.addEventListener('click', () => {
+    onDeviceMove();
+    clearInterval(timer);
+})
 
 
 window.addEventListener('deviceorientation', onDeviceMove);

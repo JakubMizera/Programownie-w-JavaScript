@@ -32,6 +32,8 @@ body {
     position: absolute;
     background-color: black;
     transform: translate(-50%, -50%);
+    top: 300px;
+    left: 300px;
 }
 
 .showTime {
