@@ -7,15 +7,28 @@ const setCanvasDimentions = (width = 800, height = 500) => {
 };
 setCanvasDimentions();
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
+const update = () => {
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawLines(ballsArray);
+  drawBalls(ballsArray);
+  if (!isPaused) {
+    updatePositon(ballsArray);
+  }
+
+  requestAnimationFrame(update);
 }
 
 // Start button
 const startBtn = document.getElementById("start");
 startBtn.addEventListener('click', update);
+
+// Stop button
+let isPaused = false;
+const stopBtn = document.getElementById("stop");
+stopBtn.addEventListener('click', () => {
+  isPaused = !isPaused;
+})
 
 // Canvas size input
 const widthInput = document.getElementById("widthInput");
@@ -24,11 +37,11 @@ const heightInput = document.getElementById("heigthInput");
 widthInput.addEventListener('change', () => {
   setCanvasDimentions(parseFloat(widthInput.value));
   refreshAnimation();
-})
+});
 heightInput.addEventListener('change', () => {
   setCanvasDimentions(widthInput.value, parseFloat(heightInput.value));
   refreshAnimation();
-})
+});
 
 
 // Number of balls input
@@ -37,7 +50,7 @@ let numOfBalls = 20;
 inputNumberOfBalls.addEventListener('change', () => {
   numOfBalls = parseFloat(inputNumberOfBalls.value);
   refreshAnimation();
-})
+});
 
 // Refresh button
 const refreshAnimation = () => {
@@ -45,31 +58,51 @@ const refreshAnimation = () => {
   for (i = 0; i < numOfBalls; i++) {
     ballsArray[i] = new Ball();
   }
-}
+};
 const btn = document.getElementById("btn");
 btn.addEventListener("click", refreshAnimation);
 
 class Ball {
   constructor() {
     // {x, y} = position of center of the ball
-    this.x = getRandomInt(15, canvas.width - 15);
-    this.y = getRandomInt(15, canvas.height - 15);
-    this.vx = Math.random() * 0.3;
-    this.vy = Math.random() * 0.3;
-    this.ballSize = getRandomInt(10, 15);
+    this.ballSize = getRandomInt(15, 30);
+    this.x = getRandomInt(this.ballSize, canvas.width - this.ballSize);
+    this.y = getRandomInt(this.ballSize, canvas.height - this.ballSize);
+    this.vx = Math.random() * (canvas.width / 1200);
+    this.vy = Math.random() * (canvas.height / 800);
+    this.connectedBalls = 0;
+    this.color = "grey";
   }
-}
+};
 
 let ballsArray = new Array(numOfBalls);
 for (i = 0; i < ballsArray.length; i++) {
   ballsArray[i] = new Ball();
-}
+};
 
+const drawLines = (ballsArray) => {
+  for (i = 0; i < ballsArray.length; i++) {
+    let connected = 0;
+    for (j = i + 1; j < ballsArray.length; j++) {
+      if (isCloseEnough(ballsArray[i], ballsArray[j], 100)) {
+        ctx.beginPath();
+        ctx.moveTo(ballsArray[i].x, ballsArray[i].y);
+        ctx.lineTo(ballsArray[j].x, ballsArray[j].y);
+        ctx.closePath();
+        ctx.stroke();
+        connected++;
+      }
+    }
+    ballsArray[i].connectedBalls = connected;
+  }
+};
 
-function update() {
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+const isCloseEnough = (pointA, pointB, minDistance) => {
+  const distance = Math.sqrt(Math.pow((pointA.x - pointB.x), 2) + Math.pow((pointA.y - pointB.y), 2));
+  return distance < minDistance;
+};
 
+const updatePositon = (ballsArray) => {
   for (const ball of ballsArray) {
     // Move the ball by its velocity
     ball.x += ball.vx;
@@ -84,30 +117,39 @@ function update() {
       // If it has, reverse the ball's y velocity
       ball.vy = -ball.vy;
     }
+  }
+};
 
+const drawBalls = (ballsArray) => {
+  for (const ball of ballsArray) {
     // Draw the ball at its new position
-    ctx.fillStyle = "grey";
+    ball.color = `hsl(${ball.connectedBalls * 360 / ballsArray.length * 2}, 50%, 50%)`;
+    ctx.fillStyle = ball.color;
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.ballSize, 0, 2 * Math.PI);
     ctx.fill();
     ctx.closePath();
   }
+};
 
-  const checkDistance = (arr) => {
-    for (i = 0; i < arr.length; i++) {
-      for (j = i + 1; j < arr.length; j++) {
-        const dist = Math.sqrt(Math.pow((arr[i].x - arr[j].x), 2) + Math.pow((arr[i].y - arr[j].y), 2))
-        if (dist < 100) {
-          ctx.beginPath();
-          ctx.moveTo(arr[i].x, arr[i].y);
-          ctx.lineTo(arr[j].x, arr[j].y);
-          ctx.closePath();
-          ctx.stroke();
-        }
-      }
-    }
-  };
-  checkDistance(ballsArray);
+const getCursorPosition = (canvas, event) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  return { x, y };
+};
+canvas.addEventListener('mousedown', (e) => {
+  const mouseXY = getCursorPosition(canvas, e);
+  ballsArray = ballsArray.filter((ball) => {
+    return !isCloseEnough(mouseXY, ball, ball.ballSize)
+  });
+  ballsArray.push(new Ball);
+  ballsArray.push(new Ball);
+});
 
-  requestAnimationFrame(update);
-}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+};
