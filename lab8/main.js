@@ -82,6 +82,10 @@ for (i = 0; i < ballsArray.length; i++) {
 
 const drawLines = (ballsArray) => {
   for (i = 0; i < ballsArray.length; i++) {
+    ballsArray[i].connectedBalls = 0;
+  }
+
+  for (i = 0; i < ballsArray.length; i++) {
     let connected = 0;
     for (j = i + 1; j < ballsArray.length; j++) {
       if (isCloseEnough(ballsArray[i], ballsArray[j], 100)) {
@@ -91,9 +95,10 @@ const drawLines = (ballsArray) => {
         ctx.closePath();
         ctx.stroke();
         connected++;
+        ballsArray[j].connectedBalls++;
       }
     }
-    ballsArray[i].connectedBalls = connected;
+    ballsArray[i].connectedBalls += connected;
   }
 };
 
@@ -123,7 +128,7 @@ const updatePositon = (ballsArray) => {
 const drawBalls = (ballsArray) => {
   for (const ball of ballsArray) {
     // Draw the ball at its new position
-    ball.color = `hsl(${ball.connectedBalls * 360 / ballsArray.length * 2}, 50%, 50%)`;
+    ball.color = `hsl(${ball.connectedBalls * 320 / ballsArray.length * 2}, 80%, 50%)`;
     ctx.fillStyle = ball.color;
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.ballSize, 0, 2 * Math.PI);
