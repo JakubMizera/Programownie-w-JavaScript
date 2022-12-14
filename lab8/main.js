@@ -140,11 +140,18 @@ const getCursorPosition = (canvas, event) => {
 };
 canvas.addEventListener('mousedown', (e) => {
   const mouseXY = getCursorPosition(canvas, e);
+  let deleteCounter = 0;
   ballsArray = ballsArray.filter((ball) => {
-    return !isCloseEnough(mouseXY, ball, ball.ballSize)
+    if (isCloseEnough(mouseXY, ball, ball.ballSize)) {
+      deleteCounter++;
+      return false;
+    }
+    return true;
   });
-  ballsArray.push(new Ball);
-  ballsArray.push(new Ball);
+  for (i = 0; i < deleteCounter; i++) {
+    ballsArray.push(new Ball);
+    ballsArray.push(new Ball);
+  }
 });
 
 
