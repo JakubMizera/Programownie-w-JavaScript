@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import axios from "axios";
+import openWeatherApi from "../APIs/openWeatherApi";
 
 const GetWeather = ({ lat, lon, city }) => {
     const [temp, setTemp] = useState(273);
@@ -25,7 +25,7 @@ const GetWeather = ({ lat, lon, city }) => {
 
     useEffect(() => {
         const fetchWeather = async () => {
-            const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${debouncedLat}&lon=${debouncedLon}&appid=c75e43288f3d141adcea7c38ba53da51`);
+            const { data } = await openWeatherApi.get(`/data/2.5/weather?lat=${debouncedLat}&lon=${debouncedLon}&appid=c75e43288f3d141adcea7c38ba53da51`);
             console.log(data.weather[0].icon);
             setTemp((data.main.temp - 273.15).toFixed(1));
             setHumidity(data.main.humidity);

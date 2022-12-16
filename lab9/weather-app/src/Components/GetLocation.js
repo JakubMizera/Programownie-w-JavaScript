@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import axios from "axios";
+import openWeatherApi from "../APIs/openWeatherApi";
 import GetWeather from "./GetWeather";
 
 const GetLocation = () => {
@@ -14,7 +14,7 @@ const GetLocation = () => {
 
     useEffect(() => {
         const fetchLocation = async () => {
-            const response = await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${searchInput}&limit=1&appid=c75e43288f3d141adcea7c38ba53da51`);
+            const response = await openWeatherApi.get(`/geo/1.0/direct?q=${searchInput}&limit=1&appid=c75e43288f3d141adcea7c38ba53da51`);
             setLat(response.data[0].lat);
             setLon(response.data[0].lon);
         }
