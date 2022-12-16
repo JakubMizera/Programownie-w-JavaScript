@@ -1,5 +1,8 @@
 import { React, useState, useEffect } from "react";
 import openWeatherApi from "../APIs/openWeatherApi";
+import { KEY } from "../APIs/openWeatherApi";
+
+import './../Style/Weather.css';
 
 const GetWeather = ({ lat, lon, city }) => {
     const [temp, setTemp] = useState(273);
@@ -25,8 +28,8 @@ const GetWeather = ({ lat, lon, city }) => {
 
     useEffect(() => {
         const fetchWeather = async () => {
-            const { data } = await openWeatherApi.get(`/data/2.5/weather?lat=${debouncedLat}&lon=${debouncedLon}&appid=c75e43288f3d141adcea7c38ba53da51`);
-            //console.log(data);
+            const { data } = await openWeatherApi.get(`/data/2.5/weather?lat=${debouncedLat}&lon=${debouncedLon}&appid=${KEY}`);
+            console.log(data);
             setTemp((data.main.temp - 273.15).toFixed(1));
             setHumidity(data.main.humidity);
             setPressure(data.main.pressure);
@@ -36,12 +39,12 @@ const GetWeather = ({ lat, lon, city }) => {
     }, [debouncedLat, debouncedLon]);
 
     return (
-        <div>
+        <div className="weather">
             <h1>Weather in {city}:</h1>
             <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt="weatherIcon"></img>
             <p>Temperature: {temp} ℃</p>
             <p>Humidity: {humidity} %</p>
-            <p>pressure: {pressure} hPa</p>
+            <p>Pressure: {pressure} hPa</p>
         </div>
     )
 };

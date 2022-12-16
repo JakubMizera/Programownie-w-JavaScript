@@ -1,0 +1,22 @@
+.location {
+    width: 100%;
+    font-size: 2rem;
+
+}
+
+.citySearch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.citySearch > label {
+    padding: 5px;
+}
+
+.citySearch > input {
+    border: 1px solid black;
+    border-radius: 4px;
+    text-align: center;
+    padding: 5px;
+}
