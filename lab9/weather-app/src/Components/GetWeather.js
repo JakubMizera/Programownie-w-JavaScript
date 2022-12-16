@@ -1,20 +1,48 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 
-const GetWeather = ({lat, lon, city}) => {
+const GetWeather = ({ lat, lon, city }) => {
     const [temp, setTemp] = useState(273);
-    
+    const [humidity, setHumidity] = useState(0);
+    const [pressure, setPressure] = useState(0);
+    const [weather, setWeather] = useState('');
+    const [debouncedLat, setDebouncedLat] = useState(lat);
+    const [debouncedLon, setDebouncedLon] = useState(lon);
+
     useEffect(() => {
-      const fetchWeather = async () => {
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=c75e43288f3d141adcea7c38ba53da51`);
-        console.log(response.data.main.temp - 273);
-        setTemp(response.data.main.temp - 273);
-      }
-      fetchWeather();
+        const timerIdLat = setTimeout(() => {
+            setDebouncedLat(lat);
+        }, 500);
+        const timerIdLon = setTimeout(() => {
+            setDebouncedLon(lon);
+        }, 500);
+
+        return () => {
+            clearTimeout(timerIdLat);
+            clearTimeout(timerIdLon);
+        };
     }, [lat, lon]);
 
+    useEffect(() => {
+        const fetchWeather = async () => {
+            const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${debouncedLat}&lon=${debouncedLon}&appid=c75e43288f3d141adcea7c38ba53da51`);
+            console.log(data.weather[0].description);
+            setTemp((data.main.temp - 273.15).toFixed(1));
+            setHumidity(data.main.humidity);
+            setPressure(data.main.pressure);
+            setWeather(data.weather[0].description);
+        }
+        fetchWeather();
+    }, [debouncedLat, debouncedLon]);
+
     return (
-        <div>Weather in {city}: {temp}</div>
+        <div>
+            <h1>Weather in {city}:</h1>
+            <p>Weather: {weather}</p>
+            <p>Temperature: {temp} ℃</p>
+            <p>Humidity: {humidity} %</p>
+            <p>pressure: {pressure} hPa</p>
+        </div>
     )
 };
 
