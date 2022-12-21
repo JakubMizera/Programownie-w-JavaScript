@@ -6,7 +6,7 @@ import GetWeather from "./GetWeather";
 import './../Style/Location.css';
 
 const GetLocation = () => {
-    const [searchInput, setSearchInput] = useState('Warsaw');
+    const [searchInput, setSearchInput] = useState('Kraków');
     const [debouncedSearchInput, setDebouncedSearchInput] = useState(searchInput);
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
