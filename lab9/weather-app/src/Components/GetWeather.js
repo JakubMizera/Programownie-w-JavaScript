@@ -33,7 +33,7 @@ const GetWeather = ({ lat, lon, city }) => {
         // Load data from localStorage when the component mounts
         const storedData = localStorage.getItem(city);
         setWeatherData(oldArray => [...oldArray, JSON.parse(storedData)]);
-    },[]);
+    },[city]);
 
     useEffect(() => {
         const fetchWeather = async () => {
@@ -49,7 +49,7 @@ const GetWeather = ({ lat, lon, city }) => {
         }
         fetchWeather();
 
-    }, [debouncedLat, debouncedLon, weatherData]);
+    }, [debouncedLat, debouncedLon, weatherData, city]);
 
     return (
         <div>
