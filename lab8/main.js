@@ -161,16 +161,30 @@ canvas.addEventListener('mousedown', (e) => {
 
 canvas.addEventListener('mousemove', (e) => {
   const mouseXY = getCursorPosition(canvas, e);
-  const pushOutPoint = mouseXY;
   console.log(mouseXY);
   ballsArray.forEach((ball) => {
-    if (isCloseEnough(pushOutPoint, ball, 50)) {
+    if (isCloseEnough(mouseXY, ball, 50)) {
       // Reverse movement of the balls
       ball.vx = -ball.vx;
       ball.vy = -ball.vy;
     }
   });
 });
+
+// canvas.addEventListener('mousemove', (e) => {
+//   setInterval(() => {
+//     const mouseXY = getCursorPosition(canvas, e);
+//     console.log(mouseXY);
+//     ballsArray.forEach((ball) => {
+//       if (isCloseEnough(mouseXY, ball, 50)) {
+//         // Reverse movement of the balls
+//         ball.vx = -ball.vx;
+//         ball.vy = -ball.vy;
+//       }
+//     });
+//   }, 1000);
+// });
+
 
 
 function getRandomInt(min, max) {

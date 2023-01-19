@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <title>Perkusja</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="set">
-        <div class="row">
-            <button class="q drum">q</button>
-            <button class="w drum">w</button>
-            <button class="e drum">e</button>
-        </div>
-        <div class="row">
-            <button class="a drum">a</button>
-            <button class="s drum">s</button>
-            <button class="d drum">d</button>
-        </div>
-        <div class="row">
-            <button class="z drum">z</button>
-            <button class="x drum">x</button>
-            <button class="c drum">c</button>
-        </div>
-      </div>
 
-    <script src ="drumkit.js"> </script>
+<body>
+    <audio src="./sounds/boom.wav" id="boom"></audio>
+    <audio src="./sounds/clap.wav" id="clap"></audio>
+    <audio src="./sounds/hihat.wav" id="hihat"></audio>
+    <audio src="./sounds/kick.wav" id="kick"></audio>
+    <audio src="./sounds/openhat.wav" id="openhat"></audio>
+    <audio src="./sounds/ride.wav" id="ride"></audio>
+    <audio src="./sounds/snare.wav" id="snare"></audio>
+    <audio src="./sounds/tink.wav" id="tink"></audio>
+    <audio src="./sounds/tom.wav" id="tom"></audio>
+
+    <div id="keyboard">
+        <button id="boom" class="key">Boom</button>
+        <button id="clap" class="key">Clap</button>
+        <button id="hihat" class="key">Hi-Hat</button>
+        <button id="kick" class="key">Kick</button>
+        <button id="openhat" class="key">Open-Hat</button>
+        <button id="ride" class="key">Ride</button>
+        <button id="snare" class="key">Snare</button>
+        <button id="tink" class="key">Tink</button>
+        <button id="tom" class="key">Tom</button>
+    </div>
+
+    <div id="panel1">
+        <button id="startRecord1" class="record">Nagrywanie 1</button>
+        <button id="playRecord1" class="play">Odtwórz nagranie 1</button>
+    </div>
+
+    <div id="panel2">
+        <button id="startRecord2" class="record">Nagrywanie 2</button>
+        <button id="playRecord2" class="play">Odtwórz nagranie 2</button>
+    </div>
+
+    <div id="panel3">
+        <button id="startRecord3" class="record">Nagrywanie 3</button>
+        <button id="playRecord3" class="play">Odtwórz nagranie 3</button>
+    </div>
+
+    <div id="panel4">
+        <button id="startRecord4" class="record">Nagrywanie 4</button>
+        <button id="playRecord4" class="play">Odtwórz nagranie 4</button>
+    </div>
+
+    <div id="panel5">
+        <button id="stopRecord" class="endRecord">Zakończ nagrywanie</button>
+    </div>
+
+    <script src="main.js"></script>
 </body>
+
 </html>
