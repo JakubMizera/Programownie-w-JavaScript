@@ -15,6 +15,7 @@ const update = () => {
   if (!isPaused) {
     updatePositon(ballsArray);
   }
+  cursorBounce();
 
   requestAnimationFrame(update);
 }
@@ -159,33 +160,21 @@ canvas.addEventListener('mousedown', (e) => {
   }
 });
 
+let globalMouseXY = 0;
 canvas.addEventListener('mousemove', (e) => {
-  const mouseXY = getCursorPosition(canvas, e);
-  console.log(mouseXY);
+  globalMouseXY = getCursorPosition(canvas, e);
+});
+
+function cursorBounce() {
+  console.log(globalMouseXY);
   ballsArray.forEach((ball) => {
-    if (isCloseEnough(mouseXY, ball, 50)) {
+    if (isCloseEnough(globalMouseXY, ball, ball.ballSize)) {
       // Reverse movement of the balls
       ball.vx = -ball.vx;
       ball.vy = -ball.vy;
     }
   });
-});
-
-// canvas.addEventListener('mousemove', (e) => {
-//   setInterval(() => {
-//     const mouseXY = getCursorPosition(canvas, e);
-//     console.log(mouseXY);
-//     ballsArray.forEach((ball) => {
-//       if (isCloseEnough(mouseXY, ball, 50)) {
-//         // Reverse movement of the balls
-//         ball.vx = -ball.vx;
-//         ball.vy = -ball.vy;
-//       }
-//     });
-//   }, 1000);
-// });
-
-
+}
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
